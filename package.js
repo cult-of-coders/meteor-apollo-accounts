@@ -6,7 +6,7 @@ Package.describe({
   // Brief, one-line summary of the package.
   summary: 'Meteor accounts in GraphQL',
   // URL to the Git repository containing the source code for this package.
-  git: 'https://github.com/cultofcoders/meteor-apollo-accounts',
+  git: 'https://github.com/cult-of-coders/meteor-apollo-accounts',
   // By default, Meteor will default to using README.md for documentation.
   // To avoid submitting documentation, set this field to null.
   documentation: 'README.md',
