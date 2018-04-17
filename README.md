@@ -16,7 +16,7 @@ Initialize the package.
 
 ```js
 import { makeExecutableSchema } from 'graphql-tools';
-import { initAccounts } from 'meteor/nicolaslopezj:apollo-accounts';
+import { initAccounts } from 'meteor/cultofcoders:apollo-accounts';
 import { load, getSchema } from 'graphql-load';
 
 const { typeDefs, resolvers } = initAccounts({
