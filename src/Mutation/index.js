@@ -1,9 +1,12 @@
 import loginWithPassword from './loginWithPassword'
+import loginWithPhone from './loginWithPhone'
 import logout from './logout'
 import changePassword from './changePassword'
 import createUser from './createUser'
+import createUserWithPhone from './createUserWithPhone'
 import verifyEmail from './verifyEmail'
 import resendVerificationEmail from './resendVerificationEmail'
+import resendPhoneVerification from './resendPhoneVerification'
 import forgotPassword from './forgotPassword'
 import resetPassword from './resetPassword'
 import oauth from './oauth'
@@ -23,6 +26,12 @@ export default function (options) {
     resolvers.createUser = createUser
     resolvers.forgotPassword = forgotPassword
     resolvers.resetPassword = resetPassword
+  }
+
+  if (hasService(options, 'phone')) {
+    resolvers.loginWithPhone = loginWithPhone
+    resolvers.createUserWithPhone = createUserWithPhone
+    resolvers.resendPhoneVerification = resendPhoneVerification
   }
 
   return {Mutation: resolvers}

@@ -23,6 +23,20 @@ export default function (options) {
     }`)
   }
 
+  if (hasService(options, 'phone')) {
+      mutations.push(`
+      type Mutation {
+        # Log the user in with a phone.
+        loginWithPhone (phone: String, verificationCode: String): LoginMethodResponse
+
+        # Create a new user with a phone.
+        createUserWithPhone (phone: String, password: String, profile: CreateUserProfileInput): SuccessResponse
+
+        # Send verification code to phone.
+        resendPhoneVerification (phone: String): SuccessResponse
+      }`)
+  }
+
   mutations.push(`
   type Mutation {
     # Log the user out.
