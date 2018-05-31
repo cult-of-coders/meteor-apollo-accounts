@@ -16,13 +16,14 @@ Initialize the package.
 
 ```js
 import { makeExecutableSchema } from 'graphql-tools';
-import { initAccounts } from 'meteor/nicolaslopezj:apollo-accounts';
+import { initAccounts } from 'meteor/cultofcoders:apollo-accounts';
 import { load, getSchema } from 'graphql-load';
 
 const { typeDefs, resolvers } = initAccounts({
   loginWithFacebook: false,
   loginWithGoogle: false,
   loginWithLinkedIn: false,
+  loginWithPhone: false,
   loginWithPassword: true,
 });
 
@@ -197,6 +198,92 @@ loginWithGoogle({ accessToken }, apollo);
   https://github.com/anthonyjgrove/react-google-login to fetch the accessToken.
 
 * `apollo`: Apollo client instance.
+
+#### Phone support
+
+Login support using phone number and verification code. Requires ujwal:accounts-phone package.
+
+```
+meteor add ujwal:accounts-phone
+```
+
+From your client, execute the following mutation:
+
+```graphql
+mutation createUserWithPhone {
+      createUserWithPhone (phone: "+11234567890", profile: {name: "A Phone User"}) {
+			success
+      }
+    }
+```
+
+Server response:
+```js
+{
+  "data": {
+    "createUserWithPhone": {
+      "success": true
+    }
+  }
+}
+```
+
+If Twilio has been set up on the server, a verification code will be sent to the phone via SMS.
+
+To login with the verification code, use the following mutation:
+
+```graphql
+mutation loginWithPhone {
+      loginWithPhone (phone: "+11234567890", verificationCode: "6593") {
+			id
+      token
+      tokenExpires
+      }
+    }
+```
+
+Server response:
+```js
+{
+  "data": {
+    "loginWithPhone": {
+      "id": "eHMzRW9B685curZ63",
+      "token": "Kg9mESwmEAs6xraKZ_hPv0tzOvQpTgMPhWTNXDFCet0",
+      "tokenExpires": 1535581386595
+    }
+  }
+}
+```
+
+You can use the response to store the login token:
+
+```js
+await setTokenStore.set(id, token, new Date(tokenExpires));
+```
+
+To request a new verification code, use the following mutation:
+
+```graphql
+mutation resendPhoneVerification {
+      resendPhoneVerification (phone: "+11234567890") {
+			success
+      }
+    }
+```
+
+Server response:
+
+```js
+{
+  "data": {
+    "resendPhoneVerification": {
+      "success": true
+    }
+  }
+}
+```
+
+If Twilio has been set up, then the verification code will sent via SMS.
 
 #### onTokenChange
 
