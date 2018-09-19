@@ -1,4 +1,4 @@
-export default function (options) {
+export default function(options) {
   return `
 # Type returned when the user logs in
 type LoginMethodResponse {
@@ -16,7 +16,7 @@ input CreateUserProfileInput {
   ${options.CreateUserProfileInput}
 }
 
-type SuccessResponse {
+type AuthSuccessResponse {
   # True if it succeeded
   success: Boolean
 }
@@ -28,5 +28,5 @@ input HashedPassword {
   # Algorithm used to hash the password
   algorithm: String!
 }
-`
+`;
 }
