@@ -12,20 +12,30 @@ import resetPassword from './resetPassword'
 import oauth from './oauth'
 import hasService from './oauth/hasService'
 
-export default function (options) {
+export default function(options) {
   const resolvers = {
     logout,
     verifyEmail,
     resendVerificationEmail,
-    ...oauth(options)
-  }
+    ...oauth(options),
+  };
 
   if (hasService(options, 'password')) {
-    resolvers.loginWithPassword = loginWithPassword
-    resolvers.changePassword = changePassword
-    resolvers.createUser = createUser
-    resolvers.forgotPassword = forgotPassword
-    resolvers.resetPassword = resetPassword
+    resolvers.loginWithPassword = loginWithPassword;
+    resolvers.changePassword = changePassword;
+
+    // TODO: maybe allow hooks for other implementations as well
+    // Maybe do not allow login without email verification?
+    resolvers.createUser = async (...args) => {
+      if (options.overrideCreateUser) {
+        return options.overrideCreateUser(createUser, ...args);
+      }
+
+      return createUser.call(null, ...args);
+    };
+
+    resolvers.forgotPassword = forgotPassword;
+    resolvers.resetPassword = resetPassword;
   }
 
   if (hasService(options, 'phone')) {
@@ -34,5 +44,5 @@ export default function (options) {
     resolvers.resendPhoneVerification = resendPhoneVerification
   }
 
-  return {Mutation: resolvers}
+  return { Mutation: resolvers };
 }

@@ -2,7 +2,7 @@
 
 A implementation of Meteor Accounts only in GraphQL with Apollo.
 
-This package uses the Meteor Accounts methods in GraphQL, it's compatible with the accounts you have saved in your database and you may use apollo-accounts and Meteor's DPP accounts at the same time.
+This package exposes Meteor Accounts functionality in GraphQL.
 
 ## Installing
 
@@ -25,6 +25,10 @@ const { typeDefs, resolvers } = initAccounts({
   loginWithLinkedIn: false,
   loginWithPhone: false,
   loginWithPassword: true,
+  overrideCreateUser: (createUser, _, args, context) {
+    // Optionally override createUser if you need custom logic
+    // Or simply restrict him from authenticating
+  }
 });
 
 // optional
@@ -48,12 +52,12 @@ npm install --save meteor-apollo-accounts
 
 ## Examples
 
-* [janikvonrotz/meteor-apollo-accounts-example](https://github.com/janikvonrotz/meteor-apollo-accounts-example): Meteor client and server side.
-* [orionsoft/server-boilerplate](https://github.com/orionsoft/server-boilerplate): Large Meteor server side only starter app.
+- [janikvonrotz/meteor-apollo-accounts-example](https://github.com/janikvonrotz/meteor-apollo-accounts-example): Meteor client and server side.
+- [orionsoft/server-boilerplate](https://github.com/orionsoft/server-boilerplate): Large Meteor server side only starter app.
 
 ## Tutorials
 
-* [Using Meteor With Apollo and React](https://blog.orionsoft.io/using-meteor-accounts-with-apollo-and-react-df3c89b46b17#.znozw2zbd)
+- [Using Meteor With Apollo and React](https://blog.orionsoft.io/using-meteor-accounts-with-apollo-and-react-df3c89b46b17#.znozw2zbd)
 
 ## Methods
 
@@ -69,13 +73,13 @@ import { loginWithPassword } from 'meteor-apollo-accounts';
 loginWithPassword({ username, email, password }, apollo);
 ```
 
-* `username`: Optional. The user's username.
+- `username`: Optional. The user's username.
 
-* `email`: Optional. The user's email.
+- `email`: Optional. The user's email.
 
-* `password`: The user's password. The library will hash the string before it sends it to the server.
+- `password`: The user's password. The library will hash the string before it sends it to the server.
 
-* `apollo`: Apollo client instance.
+- `apollo`: Apollo client instance.
 
 #### changePassword
 
@@ -87,11 +91,11 @@ import { changePassword } from 'meteor-apollo-accounts';
 changePassword({ oldPassword, newPassword }, apollo);
 ```
 
-* `oldPassword`: The user's current password. This is not sent in plain text over the wire.
+- `oldPassword`: The user's current password. This is not sent in plain text over the wire.
 
-* `newPassword`: A new password for the user. This is not sent in plain text over the wire.
+- `newPassword`: A new password for the user. This is not sent in plain text over the wire.
 
-* `apollo`: Apollo client instance.
+- `apollo`: Apollo client instance.
 
 #### logout
 
@@ -103,7 +107,7 @@ import { logout } from 'meteor-apollo-accounts';
 logout(apollo);
 ```
 
-* `apollo`: Apollo client instance.
+- `apollo`: Apollo client instance.
 
 #### createUser
 
@@ -115,15 +119,15 @@ import { createUser } from 'meteor-apollo-accounts';
 createUser({ username, email, password, profile }, apollo);
 ```
 
-* `username`: A unique name for this user.
+- `username`: A unique name for this user.
 
-* `email`: The user's email address.
+- `email`: The user's email address.
 
-* `password`: The user's password. This is not sent in plain text over the wire.
+- `password`: The user's password. This is not sent in plain text over the wire.
 
-* `profile`: The profile object based on the `UserProfileInput` input type.
+- `profile`: The profile object based on the `UserProfileInput` input type.
 
-* `apollo`: Apollo client instance.
+- `apollo`: Apollo client instance.
 
 #### verifyEmail
 
@@ -135,9 +139,9 @@ import { verifyEmail } from 'meteor-apollo-accounts';
 verifyEmail({ token }, apollo);
 ```
 
-* `token`: The token retrieved from the verification URL.
+- `token`: The token retrieved from the verification URL.
 
-* `apollo`: Apollo client instance.
+- `apollo`: Apollo client instance.
 
 #### forgotPassword
 
@@ -149,9 +153,9 @@ import { forgotPassword } from 'meteor-apollo-accounts';
 forgotPassword({ email }, apollo);
 ```
 
-* `email`: The email address to send a password reset link.
+- `email`: The email address to send a password reset link.
 
-* `apollo`: Apollo client instance.
+- `apollo`: Apollo client instance.
 
 #### resetPassword
 
@@ -163,11 +167,11 @@ import { resetPassword } from 'meteor-apollo-accounts';
 resetPassword({ newPassword, token }, apollo);
 ```
 
-* `newPassword`: A new password for the user. This is not sent in plain text over the wire.
+- `newPassword`: A new password for the user. This is not sent in plain text over the wire.
 
-* `token`: The token retrieved from the reset password URL.
+- `token`: The token retrieved from the reset password URL.
 
-* `apollo`: Apollo client instance.
+- `apollo`: Apollo client instance.
 
 #### loginWithFacebook
 
@@ -179,10 +183,10 @@ import { loginWithFacebook } from 'meteor-apollo-accounts';
 loginWithFacebook({ accessToken }, apollo);
 ```
 
-* `accessToken`: A Facebook accessToken. It's recommended to use
+- `accessToken`: A Facebook accessToken. It's recommended to use
   https://github.com/keppelen/react-facebook-login to fetch the accessToken.
 
-* `apollo`: Apollo client instance.
+- `apollo`: Apollo client instance.
 
 #### loginWithGoogle
 
@@ -194,10 +198,10 @@ import { loginWithGoogle } from 'meteor-apollo-accounts';
 loginWithGoogle({ accessToken }, apollo);
 ```
 
-* `accessToken`: A Google accessToken. It's recommended to use
+- `accessToken`: A Google accessToken. It's recommended to use
   https://github.com/anthonyjgrove/react-google-login to fetch the accessToken.
 
-* `apollo`: Apollo client instance.
+- `apollo`: Apollo client instance.
 
 #### Phone support
 
@@ -234,12 +238,12 @@ To login with the verification code, use the following mutation:
 
 ```graphql
 mutation loginWithPhone {
-      loginWithPhone (phone: "+11234567890", verificationCode: "6593") {
-			id
-      token
-      tokenExpires
-      }
-    }
+	loginWithPhone (phone: "+11234567890", verificationCode: "6593") {
+		id
+		token
+		tokenExpires
+	}
+}
 ```
 
 Server response:
@@ -265,10 +269,10 @@ To request a new verification code, use the following mutation:
 
 ```graphql
 mutation resendPhoneVerification {
-      resendPhoneVerification (phone: "+11234567890") {
-			success
-      }
-    }
+	resendPhoneVerification (phone: "+11234567890") {
+		success
+	}
+}
 ```
 
 Server response:
@@ -356,8 +360,8 @@ async login (event) {
 
 ## Contributors
 
-* [@theodorDiaconu](https://github.com/theodorDiaconu)
-* [@nicolaslopezj](https://github.com/nicolaslopezj)
-* [@janikvonrotz](https://github.com/janikvonrotz)
-* [@dbrrt](https://github.com/dbrrt)
-* [@hammadj](https://github.com/hammadj)
+- [@theodorDiaconu](https://github.com/theodorDiaconu)
+- [@nicolaslopezj](https://github.com/nicolaslopezj)
+- [@janikvonrotz](https://github.com/janikvonrotz)
+- [@dbrrt](https://github.com/dbrrt)
+- [@hammadj](https://github.com/hammadj)

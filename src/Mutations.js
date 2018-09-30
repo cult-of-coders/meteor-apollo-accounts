@@ -1,7 +1,7 @@
-import hasService from './Mutation/oauth/hasService'
+import hasService from './Mutation/oauth/hasService';
 
-export default function (options) {
-  const mutations = []
+export default function(options) {
+  const mutations = [];
 
   if (hasService(options, 'password')) {
     mutations.push(`
@@ -13,14 +13,14 @@ export default function (options) {
       createUser (username: String, email: String, password: HashedPassword, plainPassword: String, profile: CreateUserProfileInput): LoginMethodResponse
 
       # Change the current user's password. Must be logged in.
-      changePassword (oldPassword: HashedPassword!, newPassword: HashedPassword!): SuccessResponse
+      changePassword (oldPassword: HashedPassword!, newPassword: HashedPassword!): AuthSuccessResponse
 
       # Request a forgot password email.
-      forgotPassword (email: String!): SuccessResponse
+      forgotPassword (email: String!): AuthSuccessResponse
 
       # Reset the password for a user using a token received in email. Logs the user in afterwards.
       resetPassword (newPassword: HashedPassword!, token: String!): LoginMethodResponse
-    }`)
+    }`);
   }
 
   if (hasService(options, 'phone')) {
@@ -30,31 +30,31 @@ export default function (options) {
         loginWithPhone (phone: String, verificationCode: String): LoginMethodResponse
 
         # Create a new user with a phone.
-        createUserWithPhone (phone: String, password: String, profile: CreateUserProfileInput): SuccessResponse
+        createUserWithPhone (phone: String, password: String, profile: CreateUserProfileInput): AuthSuccessResponse
 
         # Send verification code to phone.
-        resendPhoneVerification (phone: String): SuccessResponse
+        resendPhoneVerification (phone: String): AuthSuccessResponse
       }`)
   }
 
   mutations.push(`
   type Mutation {
     # Log the user out.
-    logout (token: String!): SuccessResponse
+    logout (token: String!): AuthSuccessResponse
 
     # Marks the user's email address as verified. Logs the user in afterwards.
     verifyEmail (token: String!): LoginMethodResponse
 
     # Send an email with a link the user can use verify their email address.
-    resendVerificationEmail (email: String): SuccessResponse
-  }`)
+    resendVerificationEmail (email: String): AuthSuccessResponse
+  }`);
 
   if (hasService(options, 'facebook')) {
     mutations.push(`
     type Mutation {
       # Login the user with a facebook access token
       loginWithFacebook (accessToken: String!): LoginMethodResponse
-    }`)
+    }`);
   }
 
   if (hasService(options, 'google')) {
@@ -62,7 +62,7 @@ export default function (options) {
     type Mutation {
       # Login the user with a facebook access token
       loginWithGoogle (accessToken: String!, tokenId: String): LoginMethodResponse
-    }`)
+    }`);
   }
 
   if (hasService(options, 'linkedin')) {
@@ -70,8 +70,8 @@ export default function (options) {
     type Mutation {
       # Login the user with a facebook access token
       loginWithLinkedIn (code: String!, redirectUri: String!): LoginMethodResponse
-    }`)
+    }`);
   }
 
-  return mutations
+  return mutations;
 }
