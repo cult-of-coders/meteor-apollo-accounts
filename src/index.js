@@ -11,6 +11,7 @@ const initAccounts = function(givenOptions) {
     loginWithGoogle: false,
     loginWithLinkedIn: false,
     loginWithPassword: true,
+    loginWithPhone: false,
     overrideCreateUser: null, // createUser, args, context
   };
   const options = {

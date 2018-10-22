@@ -7,7 +7,7 @@ type LoginMethodResponse {
   # Token of the connection
   token: String!
   # Expiration date for the token
-  tokenExpires: Float!
+  tokenExpires: String!
   # The logged in user
   user: User
 }

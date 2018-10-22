@@ -15,5 +15,9 @@ export default function (options, service) {
     return options.loginWithLinkedIn
   }
 
+  if (service === 'phone') {
+    return options.loginWithPhone
+  }
+
   return false
 }

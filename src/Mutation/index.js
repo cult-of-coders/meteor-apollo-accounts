@@ -1,13 +1,16 @@
-import loginWithPassword from './loginWithPassword';
-import logout from './logout';
-import changePassword from './changePassword';
-import createUser from './createUser';
-import verifyEmail from './verifyEmail';
-import resendVerificationEmail from './resendVerificationEmail';
-import forgotPassword from './forgotPassword';
-import resetPassword from './resetPassword';
-import oauth from './oauth';
-import hasService from './oauth/hasService';
+import loginWithPassword from './loginWithPassword'
+import loginWithPhone from './loginWithPhone'
+import logout from './logout'
+import changePassword from './changePassword'
+import createUser from './createUser'
+import createUserWithPhone from './createUserWithPhone'
+import verifyEmail from './verifyEmail'
+import resendVerificationEmail from './resendVerificationEmail'
+import resendPhoneVerification from './resendPhoneVerification'
+import forgotPassword from './forgotPassword'
+import resetPassword from './resetPassword'
+import oauth from './oauth'
+import hasService from './oauth/hasService'
 
 export default function(options) {
   const resolvers = {
@@ -33,6 +36,12 @@ export default function(options) {
 
     resolvers.forgotPassword = forgotPassword;
     resolvers.resetPassword = resetPassword;
+  }
+
+  if (hasService(options, 'phone')) {
+    resolvers.loginWithPhone = loginWithPhone
+    resolvers.createUserWithPhone = createUserWithPhone
+    resolvers.resendPhoneVerification = resendPhoneVerification
   }
 
   return { Mutation: resolvers };
